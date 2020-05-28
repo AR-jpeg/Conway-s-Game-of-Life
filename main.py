@@ -37,11 +37,11 @@ class Game:
     def play_current_state(self, grid):
         """Run though the game and apply the rules.
             
-            The rules:
-                1) Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-                2) Any live cell with two or three live neighbours lives on to the next generation.
-                3) Any live cell with more than three live neighbours dies, as if by overpopulation.
-                4) Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+        The rules:
+            1) Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+            2) Any live cell with two or three live neighbours lives on to the next generation.
+            3) Any live cell with more than three live neighbours dies, as if by overpopulation.
+            4) Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
         """
         for row in grid:
             for elem in row:
@@ -54,26 +54,32 @@ class Game:
                     else:
                         sum += 1
                 
-        print(sum)
+                if sum < 2 or sum > 3: # It dies of 'under-population' OR 'over-population'
+                    elem = '-'
 
     def calculate_neighbors(self, grid, x, y):
         """Calculate the neighbors."""
         neighbors = []
         try:
-            for i in range(-1, 1): # From the top to bottem
-                for j in range(-1, 1): # From the left to right
+            # Work in progress...
+            # if self.isedge(grid, x, y):
+            #     return neighbors    
+
+            for i in range(-1, 2): # From the top to bottem
+                for j in range(-1, 2): # From the left to right
                     neighbors.append(grid[i][j])
-            return neighbors 
         except IndexError:
             return neighbors
+
+        return neighbors
 
     def apply_spots(self, grid, *coords):
         """Apply easch spot in a grid to a coord."""
         for arg in coords:
             grid[arg[1]][arg[0]] = 'O' # For an "x/y" system
+        return grid
+
 
 game = Game()
-
-game.apply_spots(game.old_grid, (1, 2), (5, 7))
-print(game.calculate_neighbors(game.old_grid, x=10, y=10))
-# game.play_current_state(game.old_grid)
+game.apply_spots(open_file('starts/design.in'))
+game.print_grid(game.old_grid)
